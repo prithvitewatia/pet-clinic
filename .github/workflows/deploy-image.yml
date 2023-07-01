@@ -21,6 +21,8 @@ jobs:
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.DROPLET_PRIVATE_KEY }}
           passphrase: ${{ secrets.DROPLET_PRIVATE_KEY_PASSPHRASE }}
+          known_hosts: |
+            ${{ secrets.DROPLET_IP } ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9bM5t+C/iSe3y6J9Jqdrrci1QFZhWpC07jw0W3wA/alxoZiurYD6bk5E6shMqWSGC9DXdvqTzZYKz0k9ap0xzpCIejsKLmWnbSJnna64CKRWQrL8FK/gxrLrCtJq7lqK8Eod6HmQOYZ88T+AgeQZdEVu9Sqjea0yYsli3RqZZNc4vHbZ+F6QyCrgldB3p6ZY5sCqCU1yaIAl6oW1YsvVpTt1OMQKjobKX1Etp2GLNoFVrzksbi0ZfxtGg0zibb1RXA2OXNyuI7alIy5Wp136RVEoN+XQ+mhGcrc320WhOfwoDTY2e+e2WtofpN08nfAzPn5mc9cdKklIeWlezo4Vs9Zxs6d/BmUEHLU2lmD5LW2g3Tx3ydh/5qU3T1Jc81r9INvo7V6CYP/AOfPctf/0FyrDX8enaHj19kdpo/E7GZomCFYaCfVlIZE+wX/p2pfRPwrjSYhhNmLJRWsR5gk+CHoa7iaubLf1f5ZFxEj1r1L50Ez7dHMJr9PQbfsd/Sk0=
 
       - name: Pull latest Docker image
         run: |
