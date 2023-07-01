@@ -1,0 +1,33 @@
+name: Deployment Workflow
+
+on:
+  workflow_run:
+    workflows: ["ci"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.DROPLET_PRIVATE_KEY }}
+
+      - name: Pull latest Docker image
+        run: |
+          ssh ${{ secrets.DROPLET_USERNAME }}@${{ secrets.DROPLET_IP }} 'docker pull ${{ secrets.DOCKERHUB_USERNAME }}/pet-clinic:latest'
+
+      - name: Restart Docker container
+        run: |
+          ssh ${{ secrets.DROPLET_USERNAME }}@${{ secrets.DROPLET_IP }} 'docker stop pet-clinic-container-latest'
+          ssh ${{ secrets.DROPLET_USERNAME }}@${{ secrets.DROPLET_IP }} 'docker rm pet-clinic-container-latest'
+          ssh ${{ secrets.DROPLET_USERNAME }}@${{ secrets.DROPLET_IP }} 'docker run -d --name pet-clinic-container-latest -p 80:8080 ${{ secrets.DOCKERHUB_USERNAME }}/pet-clinic:latest'
+
